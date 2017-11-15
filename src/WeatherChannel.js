@@ -31,6 +31,7 @@ export default class WeatherChannel extends Component{
       temp_c: data.current_observation.temp_c,
       temp_f: data.current_observation.temp_f
     }
+    
     this.setState({condition});
   }
 

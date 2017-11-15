@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Clock from './Clock';
+import axios from 'axios';
 
 
 export default class Bar extends Component{
@@ -7,25 +8,56 @@ export default class Bar extends Component{
   constructor(props){
     super(props);
     this.state = {
-      city: 'sydney',
+      city: 'sydney'
     }
 
+    this.sendRequest();
+
+    /*
     this._conditionXHR = new XMLHttpRequest();
     this._conditionXHR.onload = () => {this.handleConditionData()};
 
 		this._forecastXHR = new XMLHttpRequest();
 		this._forecastXHR.onload = () => {this.handleForecastData()}
+    */
   }
 
+  sendRequest(){
+
+    var weatherConditionURL = 'http://api.wunderground.com/api/f029e46fd0232d12/geolookup/conditions/q/Australia/'+this.state.city+'.json';
+    var weatherForecastURL = 'http://api.wunderground.com/api/f029e46fd0232d12/geolookup/forecast10day/q/Australia/'+this.state.city+'.json';
+
+    axios.get(weatherConditionURL)
+      .then((response) => {
+        this.props.setCity(response.data);
+        return axios.get(weatherForecastURL);
+      })
+      .then((response) => {
+        this.props.setForecast(response.data.forecast.simpleforecast.forecastday);
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
+      /*
+      axios.get(weatherForecastURL)
+        .then((response) => {
+          this.props.setForecast(response.data.forecast.simpleforecast.forecastday);
+        })
+        .catch((error) => {
+          console.log(error);
+        });*/
+  }
+
+
+
+  /*
   handleConditionData(){
     const xhr = this._conditionXHR;
 		if (xhr.status === 200) {
 			const respData = JSON.parse(xhr.responseText);
 			console.log(respData.current_observation);
-			// IMPORTANT
-			// time to invoke callback from parent <WeatherChannel />
-			// when data is ready, like telling the parent
-			// 'hey, data is ready, you can update your state now'
+
 			this.props.setCity(respData);
 
 		} else {
@@ -58,14 +90,14 @@ export default class Bar extends Component{
   }
 
   componentDidMount() {
-		this.load();
+
 	}
 
-	// clean up resource when comp unmounted
 	componentWillUnmount() {
 		this._conditionXHR = null;
 		this._forecastXHR = null;
 	}
+  */
 
   changeToF(){
     this.props.changetoF();
@@ -88,7 +120,7 @@ export default class Bar extends Component{
     return (
      <nav>
        <input type='text' onChange={(e) => this.setState({city: e.target.value})} />
-       <button onClick={() => {this.load()}}>Load</button>
+       <button onClick={() => {this.sendRequest()}}>Load</button>
 
        <label><input type="radio" name="unit" value="F" onChange={() => {this.changeToF()}} />F</label>
        <label><input type="radio" name="unit" value="C" onChange={() => {this.changeToC()}} />C</label>
