@@ -6,6 +6,7 @@ import Bar from './Bar';
 
 
 
+
 export default class WeatherChannel extends Component{
   constructor(props){
     super(props);
@@ -18,7 +19,8 @@ export default class WeatherChannel extends Component{
       },
 
       days: [],
-      unit: 'C'
+      unit: 'C',
+      number: 10
     }
   }
 
@@ -52,6 +54,14 @@ export default class WeatherChannel extends Component{
     this.setState({unit:'C'});
   }
 
+  changeto5(){
+    this.setState({number:5});
+  }
+
+  changeto10(){
+    this.setState({number:10});
+  }
+
   render() {
     return(
       <main>
@@ -60,10 +70,12 @@ export default class WeatherChannel extends Component{
           setForecast={data=>this.setForecast(data)}
           changetoF={data=>this.changetoF(data)}
           changetoC={data=>this.changetoC(data)}
+          changeto5={data=>this.changeto5(data)}
+          changeto10={data=>this.changeto10(data)}
         />
         <CityCondition condition={this.state.condition} unit={this.state.unit}/>
         <section id="right">
-            <Forecaster days={this.state.days} unit={this.state.unit} />
+            <Forecaster days={this.state.days} unit={this.state.unit} number={this.state.number}/>
         </section>
       </main>
     )

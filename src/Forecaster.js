@@ -31,10 +31,11 @@ function DailyItem(props) {
 
 
 export default function Forecaster(props) {
+  const num = props.number;
   return (
         //props.days.map((day, i) => <DailyItem key={`${day.weekday}_${i}`} day={day} unit={props.unit}/>)
         props.days.map(function(day, i){
-          if(i < 4){
+          if(i < num){
             return (<DailyItem key={`${day.weekday}_${i}`} day={day} unit={props.unit}/>)
           }
         })

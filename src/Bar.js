@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Clock from './Clock';
 
 
 export default class Bar extends Component{
@@ -74,6 +75,14 @@ export default class Bar extends Component{
     this.props.changetoC();
   }
 
+  changeTo5(){
+    this.props.changeto5();
+  }
+
+  changeTo10(){
+    this.props.changeto10();
+  }
+
 
   render() {
     return (
@@ -81,10 +90,13 @@ export default class Bar extends Component{
        <input type='text' onChange={(e) => this.setState({city: e.target.value})} />
        <button onClick={() => {this.load()}}>Load</button>
 
+       <label><input type="radio" name="unit" value="F" onChange={() => {this.changeToF()}} />F</label>
+       <label><input type="radio" name="unit" value="C" onChange={() => {this.changeToC()}} />C</label>
 
-       <input type="radio" name="unit" value="F" onChange={() => {this.changeToF()}} />F
-       <input type="radio" name="unit" value="C" onChange={() => {this.changeToC()}} />C
+       <label><input type="radio" name="num" value="5" onChange={() => {this.changeTo5()}} />5</label>
+       <label><input type="radio" name="num" value="10" onChange={() => {this.changeTo10()}} />10</label>
 
+       <Clock />
 
      </nav>
    )
